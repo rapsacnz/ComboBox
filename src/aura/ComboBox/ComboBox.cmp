@@ -1,0 +1,75 @@
+<aura:component >
+
+  <aura:attribute name="label" type="String" access="global" default=""/>
+  <aura:attribute name="searchString" type="String" description="The search string to find." access="global" />
+  <aura:attribute name="sObjectType" type="String" description="account,contact,opportunity,case" access="global" default="account" />
+  <aura:attribute name="fullList" type="Object[]" default="[]"/>
+  <aura:attribute name="filteredList" type="Object[]" default="[]"/>
+  <aura:attribute name="filteredListDisplay" type="List" default="[]"/>
+  <aura:attribute name="searchKeys" type="String[]" default="[]"/>
+  <aura:attribute name="showList" type="Boolean" default="true"/>
+
+  <aura:attribute name="sObjectTypes" type="Object" access="private"
+                  default="{'account':{'icon':'standard:account','class':'slds-icon-standard-account'},
+                           'contact':{'icon':'standard:contact','class':'slds-icon-standard-contact'},
+                           'opportunity':{'icon':'standard:opportunity','class':'slds-icon-standard-opportunity'},
+                           'case':{'icon':'standard:case','class':'slds-icon-standard-case'},
+                           }"/>
+
+  <aura:registerEvent name="listfiltered" type="c:ComponentEvent"/>
+
+  <aura:handler name="init" value="{!this}" action="{!c.init}" />
+
+
+  <div class="slds" style="width:100%">
+
+    <div class="slds-form-element">
+      <aura:if isTrue="{! not(empty(v.label))}">
+        <label class="slds-form-element__label" for="combobox-unique-id">{!v.label}</label>
+      </aura:if>
+      <div aura:id="lookup-form-element" class="slds-form-element__control">
+
+        <div class="slds-combobox_container slds-has-inline-listbox">
+          <div aura:id="combobox-div" class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-combobox-lookup" role="combobox">
+
+
+            <!-- input form combobox form element -->
+            <div aura:id="input-div" class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right ">
+
+              <ui:inputText aura:id="lookup" value="{!v.searchString}" class="slds-input slds-combobox__input"
+                updateOn="keyup" keyup="{!c.search}" blur="{!c.handleBlur}" focus="{!c.handleFocus}"></ui:inputText>
+
+              <lightning:buttonIcon alternativeText="Remove selected option" variant="bare" size="x-small" iconClass="slds-icon slds-icon slds-icon_x-small   slds-icon-text-default" iconName="utility:search" class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_right" />
+
+            </div>
+
+
+            <!-- results -->
+            <div id="listbox-unique-id" class="{! not(v.showList) ? 'netce-hide' : ''}" role="listbox">
+              <ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid" role="presentation">
+                <aura:iteration items="{!v.filteredListDisplay}" var="listItem">
+                <li role="presentation" class="slds-listbox__item">
+                  <span class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta" role="option">
+                    <span class="slds-media__figure">
+
+                    <span class="slds-icon_container slds-icon-standard-account" title="account">
+                    <lightning:icon size="small" iconName="standard:account" />
+                    </span>
+
+                    </span>
+                    <span class="slds-media__body">
+                        <span class="slds-listbox__option-text slds-listbox__option-text_entity">{!listItem[0]}</span>
+                        <span class="slds-listbox__option-meta slds-listbox__option-meta_entity">{!listItem[1]}</span>
+                    </span>
+                  </span>
+                </li>
+                </aura:iteration>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</aura:component>
