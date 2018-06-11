@@ -45,7 +45,7 @@
 
 
             <!-- results -->
-            <div id="listbox-unique-id" class="{! not(v.showList) ? 'netce-hide' : ''}" role="listbox">
+            <div id="listbox-unique-id" class="{! not(v.showList) ? 'combobox-hide' : ''}" role="listbox">
               <ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid" role="presentation">
                 <aura:iteration items="{!v.filteredListDisplay}" var="listItem">
                 <li role="presentation" class="slds-listbox__item">
